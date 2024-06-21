@@ -6,43 +6,38 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
-  public Driveside left;
-  public Driveside right;
+
+  private TalonSRX frontLeft;
+  private TalonSRX frontRight;
+  private TalonSRX backLeft;
+  private TalonSRX backRight;
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
-    left = new Driveside(Constants.FRONT_LEFT, Constants.BACK_LEFT);
-    right = new Driveside(Constants.FRONT_RIGHT, Constants.BACK_RIGHT);
+    frontLeft = new TalonSRX(Constants.FRONT_LEFT);
+    frontRight = new TalonSRX(Constants.FRONT_RIGHT);
+    backLeft = new TalonSRX(Constants.BACK_LEFT);
+    backRight = new TalonSRX(Constants.BACK_RIGHT);
+
+    backLeft.follow(frontLeft);
+    backRight.follow(frontRight);
+
+    frontLeft.setNeutralMode(NeutralMode.Brake);
+    frontRight.setNeutralMode(NeutralMode.Brake);
   }
 
-  public class Driveside {
-    public TalonSRX lead;
-    public TalonSRX follower;
-
-    public Driveside(int lead, int follower) {
-      this.lead = new TalonSRX(lead);
-      this.follower = new TalonSRX(follower);
-      this.follower.follow(this.lead);
-      this.lead.setNeutralMode(NeutralMode.Brake);
-      this.follower.setNeutralMode(NeutralMode.Brake);
-    }
-
-    public void setPower(double front, double back) {
-      this.lead.set(ControlMode.PercentOutput, front);
-      this.follower.set(ControlMode.PercentOutput, back);
-    }
-  }
-
-  public void setPower(double left, double right) {
-    this.left.setPower(left, left);
-    this.right.setPower(-right, -right);
+  public void setPower(double Left, double Right) {
+    frontLeft.set(ControlMode.PercentOutput, Left);
+    frontRight.set(ControlMode.PercentOutput, Right);
+    backLeft.set(ControlMode.PercentOutput, Left);
+    backRight.set(ControlMode.PercentOutput, Right);
   }
 
   @Override
