@@ -17,6 +17,9 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
 
   }
+  public static class TankConstants {
+    public static final double rangeX = 0.1;
+  }
   public final static int FRONT_LEFT =40;
   public final static int FRONT_RIGHT = 50;
   public final static int BACK_LEFT = 41;

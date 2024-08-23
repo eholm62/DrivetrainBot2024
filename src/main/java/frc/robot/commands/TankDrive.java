@@ -6,8 +6,9 @@ package frc.robot.commands;
 
 import com.revrobotics.CANSparkBase.ControlType;
 
+import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import frc.robot.Constants;
 import frc.robot.subsystems.*;
 
 public class TankDrive extends Command {
@@ -21,7 +22,6 @@ public class TankDrive extends Command {
     this.drivetrain = drivetrain;
     this.controller = controller;
     addRequirements(drivetrain);
-
   }
 
   // Called when the command is initially scheduled.
@@ -33,8 +33,24 @@ public class TankDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double mult = 0.5;
-    drivetrain.setPower(controller.getLeftStickY()*mult, controller.getRightStickY()*mult);
+    double mult = 0.3;
+    double max = (Math.max(Math.abs(controller.getLeftStickY()),Math.abs(controller.getLeftStickX()))) * mult;
+    double diff = (controller.getLeftStickY() - controller.getLeftStickX()) * mult;
+    double sum = (controller.getLeftStickY() + controller.getLeftStickX()) * mult;
+
+    if (controller.getLeftStickY() >= 0) {
+      if (controller.getLeftStickX() < 0) {
+        drivetrain.setPower(max, sum);
+      } else {
+        drivetrain.setPower(diff, max);
+      }
+    } else {
+      if (controller.getLeftStickX() < 0) {
+        drivetrain.setPower(diff,-max);
+      } else {
+        drivetrain.setPower(-max,sum);
+      }
+    }
   }
 
   // Called once the command ends or is interrupted.
