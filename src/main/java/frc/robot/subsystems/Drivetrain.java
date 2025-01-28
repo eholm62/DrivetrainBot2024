@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,15 +24,15 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public class Driveside {
-    public TalonSRX lead;
-    public TalonSRX follower;
+    public Spark lead;
+    public Spark follower;
 
     public Driveside(int lead, int follower) {
-      this.lead = new TalonSRX(lead);
-      this.follower = new TalonSRX(follower);
-      this.follower.follow(this.lead);
-      this.lead.setNeutralMode(NeutralMode.Brake);
-      this.follower.setNeutralMode(NeutralMode.Brake);
+      this.lead = new Spark(lead);
+      this.follower = new Spark(follower);
+      this.follower.addFollower(this.lead);
+      // this.lead.setNeutralMode(NeutralMode.Brake);
+      // this.follower.setNeutralMode(NeutralMode.Brake);
     }
 
     public void setPower(double front, double back) {
