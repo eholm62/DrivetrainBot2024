@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class linebreak extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  DigitalInput input;
+  public DigitalInput input;
 
   public linebreak() {
-    DigitalInput input = new DigitalInput(0);
-
+    input = new DigitalInput(0);
+    //true when unbroken, false when broken
   }
 
   /**
